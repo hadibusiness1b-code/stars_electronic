@@ -51,11 +51,8 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
+        <div className="pt-8 border-t border-white/10 flex items-center justify-center gap-4 text-sm text-gray-500">
           <p>© {new Date().getFullYear()} شركة النجوم للخدمات الإلكترونية. جميع الحقوق محفوظة.</p>
-          <div className="flex items-center gap-6">
-             <span>تصميم وتطوير بواسطة AI Studio</span>
-          </div>
         </div>
       </div>
     </footer>

@@ -1,8 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Phone, MapPin, Mail, MessageSquare, Facebook, Instagram } from 'lucide-react';
 
 export const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    service: 'طاقة شمسية',
+    details: ''
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const { name, phone, service, details } = formData;
+    
+    const text = `مرحباً شركة النجوم، طلب خدمة جديد من الموقع:
+👤 الاسم: ${name || 'غير محدد'}
+📞 رقم الهاتف: ${phone || 'غير محدد'}
+🔧 نوع الخدمة: ${service}
+📝 تفاصيل الطلب:
+${details || 'لا يوجد تفاصيل إضافية'}`;
+
+    const whatsappUrl = `https://wa.me/963996761176?text=${encodeURIComponent(text)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
   return (
     <section id="contact" className="py-24 bg-white relative">
       <div className="max-w-7xl mx-auto px-6">
@@ -83,12 +110,15 @@ export const Contact = () => {
             <div className="bg-gray-50 p-12 lg:p-16 rounded-tl-[2.5rem] lg:rounded-bl-none rounded-bl-[2.5rem] lg:rounded-[2.5rem] m-2 lg:m-4 shadow-inner">
               <h3 className="text-2xl font-bold text-primary-dark mb-8">أرسل لنا رسالة</h3>
               
-              <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
+              <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-semibold text-gray-700">الاسم الكريم</label>
                     <input 
-                      type="text" 
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
                       placeholder="أدخل اسمك"
                       className="bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-800"
                     />
@@ -96,7 +126,10 @@ export const Contact = () => {
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-semibold text-gray-700">رقم الهاتف</label>
                     <input 
-                      type="tel" 
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
                       placeholder="09XX XXX XXX"
                       dir="ltr"
                       className="bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-800 text-right"
@@ -106,19 +139,27 @@ export const Contact = () => {
                 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-semibold text-gray-700">نوع الخدمة المكتوبة</label>
-                  <select className="bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-800 cursor-pointer">
-                    <option>طاقة شمسية</option>
-                    <option>أنظمة مراقبة</option>
-                    <option>حماية وإنذار</option>
-                    <option>أنظمة صواعق</option>
-                    <option>أدوات ومفكات</option>
-                    <option>استشارة عامة</option>
+                  <select 
+                    name="service"
+                    value={formData.service}
+                    onChange={handleChange}
+                    className="bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-800 cursor-pointer"
+                  >
+                    <option value="طاقة شمسية">طاقة شمسية</option>
+                    <option value="أنظمة مراقبة">أنظمة مراقبة</option>
+                    <option value="حماية وإنذار">حماية وإنذار</option>
+                    <option value="أنظمة صواعق">أنظمة صواعق</option>
+                    <option value="أدوات ومفكات">أدوات ومفكات</option>
+                    <option value="استشارة عامة">استشارة عامة</option>
                   </select>
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-semibold text-gray-700">تفاصيل الطلب</label>
                   <textarea 
+                    name="details"
+                    value={formData.details}
+                    onChange={handleChange}
                     rows={4}
                     placeholder="اكتب تفاصيل طلبك أو استفسارك هنا..."
                     className="bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-800 resize-none"
